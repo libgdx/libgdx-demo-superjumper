@@ -4,6 +4,11 @@ Libgdx demo - Superjumper
 
 Super Jumper is a very simple Doodle Jump clone.
 
+### Try it here 
+  * [WebGL/Browser](http://libgdx.badlogicgames.com/demos/superjumper)
+  * [Desktop](http://libgdx.badlogicgames.com/demos/superjumper/superjumper.jar)
+  * [Android](http://libgdx.badlogicgames.com/demos/superjumper/superjumper.apk)
+
 ### Running
 * [Setup your development environment](https://github.com/libgdx/libgdx/wiki)
 * Clone the repository or download and extract the ZIP file
