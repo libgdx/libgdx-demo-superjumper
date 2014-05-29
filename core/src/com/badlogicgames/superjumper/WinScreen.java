@@ -17,7 +17,7 @@ public class WinScreen extends ScreenAdapter {
 						  "Bob: So all this \nwork for nothing?",
 						  "Princess: I have \ncake and tea!\nWould you like some?",
 						  "Bob: I'd be my \npleasure!",
-						  "And they ate cake\nand drank tea\nhappily ever \nafter\n\n\n\n\n\n\nKära Emma!\nDu är fantastisk!\nDu avslutade\nleken!"
+						  "And they ate cake\nand drank tea\nhappily ever \nafter\n\n\n\n\n\n\nKära Emma!\nDu är fantastisk!\nDu blev ferdig\n med spelet!"
 			};
 	int currentMessage = 0;
 	
