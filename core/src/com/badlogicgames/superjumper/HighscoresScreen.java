@@ -16,33 +16,28 @@
 
 package com.badlogicgames.superjumper;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
-public class HighscoresScreen implements Screen {
-	Game game;
-
+public class HighscoresScreen extends ScreenAdapter {
+	SuperJumper game;
 	OrthographicCamera guiCam;
-	SpriteBatch batcher;
 	Rectangle backBounds;
 	Vector3 touchPoint;
 	String[] highScores;
 	float xOffset = 0;
 
-	public HighscoresScreen (Game game) {
+	public HighscoresScreen (SuperJumper game) {
 		this.game = game;
 
 		guiCam = new OrthographicCamera(320, 480);
 		guiCam.position.set(320 / 2, 480 / 2, 0);
 		backBounds = new Rectangle(0, 0, 64, 64);
 		touchPoint = new Vector3();
-		batcher = new SpriteBatch();
 		highScores = new String[5];
 		for (int i = 0; i < 5; i++) {
 			highScores[i] = i + 1 + ". " + Settings.highscores[i];
@@ -68,53 +63,29 @@ public class HighscoresScreen implements Screen {
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		guiCam.update();
 
-		batcher.setProjectionMatrix(guiCam.combined);
-		batcher.disableBlending();
-		batcher.begin();
-		batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
-		batcher.end();
+		game.batcher.setProjectionMatrix(guiCam.combined);
+		game.batcher.disableBlending();
+		game.batcher.begin();
+		game.batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
+		game.batcher.end();
 
-		batcher.enableBlending();
-		batcher.begin();
-		batcher.draw(Assets.highScoresRegion, 10, 360 - 16, 300, 33);
+		game.batcher.enableBlending();
+		game.batcher.begin();
+		game.batcher.draw(Assets.highScoresRegion, 10, 360 - 16, 300, 33);
 
 		float y = 230;
 		for (int i = 4; i >= 0; i--) {
-			Assets.font.draw(batcher, highScores[i], xOffset, y);
+			Assets.font.draw(game.batcher, highScores[i], xOffset, y);
 			y += Assets.font.getLineHeight();
 		}
 
-		batcher.draw(Assets.arrow, 0, 0, 64, 64);
-		batcher.end();
+		game.batcher.draw(Assets.arrow, 0, 0, 64, 64);
+		game.batcher.end();
 	}
 
 	@Override
 	public void render (float delta) {
 		update();
 		draw();
-	}
-
-	@Override
-	public void resize (int width, int height) {
-	}
-
-	@Override
-	public void show () {
-	}
-
-	@Override
-	public void hide () {
-	}
-
-	@Override
-	public void pause () {
-	}
-
-	@Override
-	public void resume () {
-	}
-
-	@Override
-	public void dispose () {
 	}
 }

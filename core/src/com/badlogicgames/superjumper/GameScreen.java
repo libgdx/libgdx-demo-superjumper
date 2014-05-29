@@ -17,31 +17,27 @@
 package com.badlogicgames.superjumper;
 
 import com.badlogic.gdx.Application.ApplicationType;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-
 import com.badlogicgames.superjumper.World.WorldListener;
 
-public class GameScreen implements Screen {
+public class GameScreen extends ScreenAdapter {
 	static final int GAME_READY = 0;
 	static final int GAME_RUNNING = 1;
 	static final int GAME_PAUSED = 2;
 	static final int GAME_LEVEL_END = 3;
 	static final int GAME_OVER = 4;
 
-	Game game;
+	SuperJumper game;
 
 	int state;
 	OrthographicCamera guiCam;
 	Vector3 touchPoint;
-	SpriteBatch batcher;
 	World world;
 	WorldListener worldListener;
 	WorldRenderer renderer;
@@ -51,14 +47,13 @@ public class GameScreen implements Screen {
 	int lastScore;
 	String scoreString;
 
-	public GameScreen (Game game) {
+	public GameScreen (SuperJumper game) {
 		this.game = game;
 
 		state = GAME_READY;
 		guiCam = new OrthographicCamera(320, 480);
 		guiCam.position.set(320 / 2, 480 / 2, 0);
 		touchPoint = new Vector3();
-		batcher = new SpriteBatch();
 		worldListener = new WorldListener() {
 			@Override
 			public void jump () {
@@ -81,7 +76,7 @@ public class GameScreen implements Screen {
 			}
 		};
 		world = new World(worldListener);
-		renderer = new WorldRenderer(batcher, world);
+		renderer = new WorldRenderer(game.batcher, world);
 		pauseBounds = new Rectangle(320 - 64, 480 - 64, 64, 64);
 		resumeBounds = new Rectangle(160 - 96, 240, 192, 36);
 		quitBounds = new Rectangle(160 - 96, 240 - 36, 192, 36);
@@ -144,7 +139,7 @@ public class GameScreen implements Screen {
 			scoreString = "SCORE: " + lastScore;
 		}
 		if (world.state == World.WORLD_STATE_NEXT_LEVEL) {
-			state = GAME_LEVEL_END;
+			game.setScreen(new WinScreen(game));
 		}
 		if (world.state == World.WORLD_STATE_GAME_OVER) {
 			state = GAME_OVER;
@@ -178,7 +173,7 @@ public class GameScreen implements Screen {
 	private void updateLevelEnd () {
 		if (Gdx.input.justTouched()) {
 			world = new World(worldListener);
-			renderer = new WorldRenderer(batcher, world);
+			renderer = new WorldRenderer(game.batcher, world);
 			world.score = lastScore;
 			state = GAME_READY;
 		}
@@ -197,9 +192,9 @@ public class GameScreen implements Screen {
 		renderer.render();
 
 		guiCam.update();
-		batcher.setProjectionMatrix(guiCam.combined);
-		batcher.enableBlending();
-		batcher.begin();
+		game.batcher.setProjectionMatrix(guiCam.combined);
+		game.batcher.enableBlending();
+		game.batcher.begin();
 		switch (state) {
 		case GAME_READY:
 			presentReady();
@@ -217,21 +212,21 @@ public class GameScreen implements Screen {
 			presentGameOver();
 			break;
 		}
-		batcher.end();
+		game.batcher.end();
 	}
 
 	private void presentReady () {
-		batcher.draw(Assets.ready, 160 - 192 / 2, 240 - 32 / 2, 192, 32);
+		game.batcher.draw(Assets.ready, 160 - 192 / 2, 240 - 32 / 2, 192, 32);
 	}
 
 	private void presentRunning () {
-		batcher.draw(Assets.pause, 320 - 64, 480 - 64, 64, 64);
-		Assets.font.draw(batcher, scoreString, 16, 480 - 20);
+		game.batcher.draw(Assets.pause, 320 - 64, 480 - 64, 64, 64);
+		Assets.font.draw(game.batcher, scoreString, 16, 480 - 20);
 	}
 
 	private void presentPaused () {
-		batcher.draw(Assets.pauseMenu, 160 - 192 / 2, 240 - 96 / 2, 192, 96);
-		Assets.font.draw(batcher, scoreString, 16, 480 - 20);
+		game.batcher.draw(Assets.pauseMenu, 160 - 192 / 2, 240 - 96 / 2, 192, 96);
+		Assets.font.draw(game.batcher, scoreString, 16, 480 - 20);
 	}
 
 	private void presentLevelEnd () {
@@ -239,14 +234,14 @@ public class GameScreen implements Screen {
 		String bottomText = "in another castle!";
 		float topWidth = Assets.font.getBounds(topText).width;
 		float bottomWidth = Assets.font.getBounds(bottomText).width;
-		Assets.font.draw(batcher, topText, 160 - topWidth / 2, 480 - 40);
-		Assets.font.draw(batcher, bottomText, 160 - bottomWidth / 2, 40);
+		Assets.font.draw(game.batcher, topText, 160 - topWidth / 2, 480 - 40);
+		Assets.font.draw(game.batcher, bottomText, 160 - bottomWidth / 2, 40);
 	}
 
 	private void presentGameOver () {
-		batcher.draw(Assets.gameOver, 160 - 160 / 2, 240 - 96 / 2, 160, 96);
+		game.batcher.draw(Assets.gameOver, 160 - 160 / 2, 240 - 96 / 2, 160, 96);
 		float scoreWidth = Assets.font.getBounds(scoreString).width;
-		Assets.font.draw(batcher, scoreString, 160 - scoreWidth / 2, 480 - 20);
+		Assets.font.draw(game.batcher, scoreString, 160 - scoreWidth / 2, 480 - 20);
 	}
 
 	@Override
@@ -256,27 +251,7 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
-	public void resize (int width, int height) {
-	}
-
-	@Override
-	public void show () {
-	}
-
-	@Override
-	public void hide () {
-	}
-
-	@Override
 	public void pause () {
 		if (state == GAME_RUNNING) state = GAME_PAUSED;
-	}
-
-	@Override
-	public void resume () {
-	}
-
-	@Override
-	public void dispose () {
 	}
 }

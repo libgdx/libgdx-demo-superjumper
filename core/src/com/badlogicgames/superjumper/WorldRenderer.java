@@ -26,7 +26,6 @@ public class WorldRenderer {
 	World world;
 	OrthographicCamera cam;
 	SpriteBatch batch;
-	TextureRegion background;
 
 	public WorldRenderer (SpriteBatch batch, World world) {
 		this.world = world;

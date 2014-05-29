@@ -16,33 +16,27 @@
 
 package com.badlogicgames.superjumper;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.TimeUtils;
 
-public class MainMenuScreen implements Screen {
-	Game game;
-
+public class MainMenuScreen extends ScreenAdapter {
+	SuperJumper game;
 	OrthographicCamera guiCam;
-	SpriteBatch batcher;
 	Rectangle soundBounds;
 	Rectangle playBounds;
 	Rectangle highscoresBounds;
 	Rectangle helpBounds;
 	Vector3 touchPoint;
 
-	public MainMenuScreen (Game game) {
+	public MainMenuScreen (SuperJumper game) {
 		this.game = game;
 
 		guiCam = new OrthographicCamera(320, 480);
 		guiCam.position.set(320 / 2, 480 / 2, 0);
-		batcher = new SpriteBatch();
 		soundBounds = new Rectangle(0, 0, 64, 64);
 		playBounds = new Rectangle(160 - 150, 200 + 18, 300, 36);
 		highscoresBounds = new Rectangle(160 - 150, 200 - 18, 300, 36);
@@ -80,36 +74,24 @@ public class MainMenuScreen implements Screen {
 		}
 	}
 
-	long last = TimeUtils.nanoTime();
-
 	public void draw () {
 		GL20 gl = Gdx.gl;
 		gl.glClearColor(1, 0, 0, 1);
 		gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		guiCam.update();
-		batcher.setProjectionMatrix(guiCam.combined);
+		game.batcher.setProjectionMatrix(guiCam.combined);
 
-		batcher.disableBlending();
-		batcher.begin();
-		batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
-		batcher.end();
+		game.batcher.disableBlending();
+		game.batcher.begin();
+		game.batcher.draw(Assets.backgroundRegion, 0, 0, 320, 480);
+		game.batcher.end();
 
-		batcher.enableBlending();
-		batcher.begin();
-		batcher.draw(Assets.logo, 160 - 274 / 2, 480 - 10 - 142, 274, 142);
-		batcher.draw(Assets.mainMenu, 10, 200 - 110 / 2, 300, 110);
-		batcher.draw(Settings.soundEnabled ? Assets.soundOn : Assets.soundOff, 0, 0, 64, 64);
-		batcher.end();
-
-		if (TimeUtils.nanoTime() - last > 2000000000) {
-			Gdx.app.log("SuperJumper",
-				"version: " + Gdx.app.getVersion() + ", memory: " + Gdx.app.getJavaHeap() + ", " + Gdx.app.getNativeHeap()
-					+ ", native orientation:" + Gdx.input.getNativeOrientation() + ", orientation: " + Gdx.input.getRotation()
-					+ ", accel: " + (int)Gdx.input.getAccelerometerX() + ", " + (int)Gdx.input.getAccelerometerY() + ", "
-					+ (int)Gdx.input.getAccelerometerZ() + ", apr: " + (int)Gdx.input.getAzimuth() + ", " + (int)Gdx.input.getPitch()
-					+ ", " + (int)Gdx.input.getRoll());
-			last = TimeUtils.nanoTime();
-		}
+		game.batcher.enableBlending();
+		game.batcher.begin();
+		game.batcher.draw(Assets.logo, 160 - 274 / 2, 480 - 10 - 142, 274, 142);
+		game.batcher.draw(Assets.mainMenu, 10, 200 - 110 / 2, 300, 110);
+		game.batcher.draw(Settings.soundEnabled ? Assets.soundOn : Assets.soundOff, 0, 0, 64, 64);
+		game.batcher.end();	
 	}
 
 	@Override
@@ -119,27 +101,7 @@ public class MainMenuScreen implements Screen {
 	}
 
 	@Override
-	public void resize (int width, int height) {
-	}
-
-	@Override
-	public void show () {
-	}
-
-	@Override
-	public void hide () {
-	}
-
-	@Override
 	public void pause () {
 		Settings.save();
-	}
-
-	@Override
-	public void resume () {
-	}
-
-	@Override
-	public void dispose () {
 	}
 }
