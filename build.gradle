@@ -1,28 +1,45 @@
+import groovy.json.JsonSlurper
+
 buildscript {
+
+    ant.get(src: 'http://libgdx.badlogicgames.com/libgdx-site/service/getVersions?release=false', dest: 'versions.json')
+    def versionFile = file('versions.json')
+    def json
+    if (versionFile.exists()) {
+        json = new JsonSlurper().parseText(versionFile.text)
+    } else throw new GradleException("Unable to retrieve latest versions, please check your internet connection")
+
+    ext {
+        gdxVersion = json.libgdxSnapshot
+        roboVMVersion = json.robovmVersion
+        roboVMGradleVersion = json.robovmPluginVersion
+        androidToolsVersion = json.androidBuildtoolsVersion
+        androidSDKVersion = json.androidSDKVersion
+        androidGradleToolsVersion = json.androidGradleToolVersion
+        gwtVersion = json.gwtVersion
+        gwtGradleVersion = json.gwtPluginVersion
+    }
+
     repositories {
-        maven {
-            url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/'
-        }
+        jcenter()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
 
     dependencies {
-        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.3'
-        classpath 'com.android.tools.build:gradle:0.9+'
-        classpath 'com.github.jtakakura:gradle-robovm-plugin:0.0.6'
+        classpath "de.richsource.gradle.plugins:gwt-gradle-plugin:$gwtGradleVersion"
+        classpath "com.android.tools.build:gradle:$androidGradleToolsVersion"
+        classpath "org.robovm:robovm-gradle-plugin:$roboVMGradleVersion"
     }
 }
 
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
-    
+
     version = "1.0"
     ext {
         appName = "Super Jumper"
-        gdxVersion = "1.0-SNAPSHOT"
-        roboVMVersion = "0.0.11"
     }
     
     repositories {
