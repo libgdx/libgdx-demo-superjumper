@@ -46,7 +46,7 @@ public class Assets {
 	public static TextureRegion bobHit;
 	public static Animation squirrelFly;
 	public static TextureRegion platform;
-	public static Animation brakingPlatform;
+	public static Animation breakingPlatform;
 	public static BitmapFont font;
 
 	public static Music music;
@@ -85,7 +85,7 @@ public class Assets {
 		bobHit = new TextureRegion(items, 128, 128, 32, 32);
 		squirrelFly = new Animation(0.2f, new TextureRegion(items, 0, 160, 32, 32), new TextureRegion(items, 32, 160, 32, 32));
 		platform = new TextureRegion(items, 64, 160, 64, 16);
-		brakingPlatform = new Animation(0.2f, new TextureRegion(items, 64, 160, 64, 16), new TextureRegion(items, 64, 176, 64, 16),
+		breakingPlatform = new Animation(0.2f, new TextureRegion(items, 64, 160, 64, 16), new TextureRegion(items, 64, 176, 64, 16),
 			new TextureRegion(items, 64, 192, 64, 16), new TextureRegion(items, 64, 208, 64, 16));
 
 		font = new BitmapFont(Gdx.files.internal("data/font.fnt"), Gdx.files.internal("data/font.png"), false);
