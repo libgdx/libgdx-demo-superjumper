@@ -20,6 +20,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
@@ -30,6 +31,7 @@ public class HighscoresScreen extends ScreenAdapter {
 	Vector3 touchPoint;
 	String[] highScores;
 	float xOffset = 0;
+	GlyphLayout glyphLayout = new GlyphLayout();
 
 	public HighscoresScreen (SuperJumper game) {
 		this.game = game;
@@ -41,7 +43,8 @@ public class HighscoresScreen extends ScreenAdapter {
 		highScores = new String[5];
 		for (int i = 0; i < 5; i++) {
 			highScores[i] = i + 1 + ". " + Settings.highscores[i];
-			xOffset = Math.max(Assets.font.getBounds(highScores[i]).width, xOffset);
+			glyphLayout.setText(Assets.font, highScores[i]);
+			xOffset = Math.max(glyphLayout.width, xOffset);
 		}
 		xOffset = 160 - xOffset / 2 + Assets.font.getSpaceWidth() / 2;
 	}

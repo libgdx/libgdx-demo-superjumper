@@ -22,6 +22,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogicgames.superjumper.World.WorldListener;
@@ -46,6 +47,8 @@ public class GameScreen extends ScreenAdapter {
 	Rectangle quitBounds;
 	int lastScore;
 	String scoreString;
+
+	GlyphLayout glyphLayout = new GlyphLayout();
 
 	public GameScreen (SuperJumper game) {
 		this.game = game;
@@ -230,18 +233,16 @@ public class GameScreen extends ScreenAdapter {
 	}
 
 	private void presentLevelEnd () {
-		String topText = "the princess is ...";
-		String bottomText = "in another castle!";
-		float topWidth = Assets.font.getBounds(topText).width;
-		float bottomWidth = Assets.font.getBounds(bottomText).width;
-		Assets.font.draw(game.batcher, topText, 160 - topWidth / 2, 480 - 40);
-		Assets.font.draw(game.batcher, bottomText, 160 - bottomWidth / 2, 40);
+		glyphLayout.setText(Assets.font, "the princess is ...");
+		Assets.font.draw(game.batcher, glyphLayout, 160 - glyphLayout.width / 2, 480 - 40);
+		glyphLayout.setText(Assets.font, "in another castle!");
+		Assets.font.draw(game.batcher, glyphLayout, 160 - glyphLayout.width / 2, 40);
 	}
 
 	private void presentGameOver () {
 		game.batcher.draw(Assets.gameOver, 160 - 160 / 2, 240 - 96 / 2, 160, 96);
-		float scoreWidth = Assets.font.getBounds(scoreString).width;
-		Assets.font.draw(game.batcher, scoreString, 160 - scoreWidth / 2, 480 - 20);
+		glyphLayout.setText(Assets.font, scoreString);
+		Assets.font.draw(game.batcher, scoreString, 160 - glyphLayout.width / 2, 480 - 20);
 	}
 
 	@Override

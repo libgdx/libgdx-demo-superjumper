@@ -5,7 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
+import com.badlogic.gdx.utils.Align;
 
 public class WinScreen extends ScreenAdapter {
 	SuperJumper game;
@@ -45,7 +45,7 @@ public class WinScreen extends ScreenAdapter {
 		game.batcher.draw(Assets.backgroundRegion, 0, 0);
 		game.batcher.draw(Assets.castle, 60, 120, 200, 200);
 		game.batcher.draw(Assets.bobFall.getKeyFrame(0, Animation.ANIMATION_LOOPING), 120, 200);
-		Assets.font.drawMultiLine(game.batcher, messages[currentMessage], 0, 400, 320, HAlignment.CENTER);
+		Assets.font.draw(game.batcher, messages[currentMessage], 0, 400, 320, Align.center, false);
 		game.batcher.draw(princess,150, 200);
 		game.batcher.end();
 	}
