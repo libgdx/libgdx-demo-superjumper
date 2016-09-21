@@ -30,6 +30,7 @@ public class HelpScreen extends ScreenAdapter {
 
 	OrthographicCamera guiCam;
 	Rectangle nextBounds;
+	Rectangle backBounds;
 	Vector3 touchPoint;
 	int fileCounter;
 	String helpFiles[];
@@ -41,6 +42,7 @@ public class HelpScreen extends ScreenAdapter {
 		guiCam = new OrthographicCamera();
 		guiCam.setToOrtho(false, 320, 480);
 		nextBounds = new Rectangle(320 - 64, 0, 64, 64);
+		backBounds = new Rectangle(0, 0, 64, 64);
 		touchPoint = new Vector3();
 		fileCounter = 0;
 		helpFiles = new String[]{"data/help1.png","data/help2.png","data/help3.png","data/help4.png","data/help5.png"};
@@ -64,6 +66,16 @@ public class HelpScreen extends ScreenAdapter {
 					game.setScreen(new MainMenuScreen(game));
 				}
 			}
+
+			if(backBounds.contains(touchPoint.x,touchPoint.y)) {
+				Assets.playSound(Assets.clickSound);
+				if(fileCounter<1){
+					game.setScreen(new MainMenuScreen(game));
+				}
+				else{
+					fileCounter--;
+				}
+			}
 		}
 	}
 
@@ -82,6 +94,7 @@ public class HelpScreen extends ScreenAdapter {
 		game.batcher.enableBlending();
 		game.batcher.begin();
 		game.batcher.draw(Assets.arrow, 320, 0, -64, 64);
+		game.batcher.draw(Assets.arrow, 0, 0, 64, 64);
 		game.batcher.end();
 	}
 
