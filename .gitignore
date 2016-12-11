@@ -29,6 +29,7 @@ gen/
 *.iml
 out/
 com_crashlytics_export_strings.xml
+android/libs
 
 ## Eclipse
 
@@ -55,6 +56,6 @@ nbactions.xml
 nb-configuration.xml
 
 ## Gradle
-
+versions.json
 .gradle
 build/
