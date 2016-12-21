@@ -17,3 +17,5 @@ Super Jumper is a very simple Doodle Jump clone.
   * [Intellij IDEA](https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA)
   * [NetBeans](https://github.com/libgdx/libgdx/wiki/Gradle-and-NetBeans)
   * [Commandline|Gradle on the Commandline](https://github.com/libgdx/libgdx/wiki/Gradle-on-the-Commandline)
+
+
