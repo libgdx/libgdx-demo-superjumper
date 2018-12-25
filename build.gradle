@@ -21,13 +21,16 @@ buildscript {
     }
 
     repositories {
-        jcenter()
+        mavenLocal()
         mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+        google()
     }
 
     dependencies {
-        classpath "de.richsource.gradle.plugins:gwt-gradle-plugin:$gwtGradleVersion"
+        classpath "org.wisepersist:gwt-gradle-plugin:$gwtGradleVersion"
         classpath "com.android.tools.build:gradle:$androidGradleToolsVersion"
         classpath "com.mobidevelop.robovm:robovm-gradle-plugin:$roboVMGradleVersion"
     }
@@ -43,9 +46,11 @@ allprojects {
     }
     
     repositories {
-        mavenLocal();
+        mavenLocal()
         mavenCentral()
+        google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
 
@@ -84,7 +89,6 @@ project(":android") {
 project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
-    webAppDirName = 'webapp'
 
     dependencies {
         compile project(":core")
