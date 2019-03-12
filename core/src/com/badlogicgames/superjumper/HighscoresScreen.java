@@ -46,7 +46,7 @@ public class HighscoresScreen extends ScreenAdapter {
 			glyphLayout.setText(Assets.font, highScores[i]);
 			xOffset = Math.max(glyphLayout.width, xOffset);
 		}
-		xOffset = 160 - xOffset / 2 + Assets.font.getSpaceWidth() / 2;
+		xOffset = 160 - xOffset / 2 + Assets.font.getSpaceXadvance() / 2;
 	}
 
 	public void update () {
