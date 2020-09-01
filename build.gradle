@@ -2,7 +2,7 @@ import groovy.json.JsonSlurper
 
 buildscript {
 
-    ant.get(src: 'http://libgdx.badlogicgames.com/libgdx-site/service/getVersions?release=false', dest: 'versions.json')
+    ant.get(src: 'http://libgdx.com/service/versions.json', dest: 'versions.json')
     def versionFile = file('versions.json')
     def json
     if (versionFile.exists()) {
@@ -10,7 +10,7 @@ buildscript {
     } else throw new GradleException("Unable to retrieve latest versions, please check your internet connection")
 
     ext {
-        gdxVersion = json.libgdxSnapshot
+        gdxVersion = json.libgdxRelease
         roboVMVersion = json.robovmVersion
         roboVMGradleVersion = json.robovmPluginVersion
         androidToolsVersion = json.androidBuildtoolsVersion
